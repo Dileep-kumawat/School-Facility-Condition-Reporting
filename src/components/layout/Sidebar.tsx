@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useTheme } from '@/context/ThemeContext';
 import { User } from '@/types';
 import { cn } from '@/lib/utils';
+import { DEFAULT_AVATAR } from '@/lib/constants';
 import {
   LayoutDashboard,
   PlusCircle,
@@ -118,7 +119,7 @@ export function Sidebar({ user, isOpen, setIsOpen, onLogout }: SidebarProps) {
         <div className="p-4 mx-4 mt-4 border border-border/60 rounded-xl bg-muted-background/40">
           <div className="flex items-center gap-3">
             <img
-              src={user.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop'}
+              src={user.avatar || DEFAULT_AVATAR}
               alt={user.name}
               className="w-10 h-10 rounded-full object-cover ring-2 ring-primary/20"
             />

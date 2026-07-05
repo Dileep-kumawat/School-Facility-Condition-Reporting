@@ -4,6 +4,7 @@ import React, { useState, useMemo } from 'react';
 import { User, UserRole } from '@/types';
 import { Card, CardContent } from '@/components/ui/Card';
 import { formatDate } from '@/lib/utils';
+import { DEFAULT_AVATAR } from '@/lib/constants';
 import { Search, Shield, User as UserIcon, GraduationCap, AlertCircle } from 'lucide-react';
 
 interface AdminUsersClientProps {
@@ -107,7 +108,7 @@ export default function AdminUsersClient({ initialUsers }: AdminUsersClientProps
                     <td className="p-4">
                       <div className="flex items-center gap-3">
                         <img
-                          src={user.avatar}
+                          src={user.avatar || DEFAULT_AVATAR}
                           alt={user.name}
                           className="w-9 h-9 rounded-full object-cover ring-1 ring-border/50 shrink-0"
                         />

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { User, Notification } from '@/types';
 import { cn } from '@/lib/utils';
+import { DEFAULT_AVATAR } from '@/lib/constants';
 import { Bell, Menu, Search, User as UserIcon, LogOut, Check } from 'lucide-react';
 import { formatTimeAgo } from '@/lib/utils';
 
@@ -160,7 +161,7 @@ export function TopNavbar({
             className="flex items-center gap-2 p-1 rounded-full hover:bg-muted-background transition focus:outline-none"
           >
             <img
-              src={user.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop'}
+              src={user.avatar || DEFAULT_AVATAR}
               alt={user.name}
               className="w-8 h-8 rounded-full object-cover ring-1 ring-border"
             />

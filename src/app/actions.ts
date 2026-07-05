@@ -3,6 +3,7 @@
 import crypto from 'crypto';
 import { revalidatePath } from 'next/cache';
 import { DB } from '@/lib/db';
+import { DEFAULT_AVATAR } from '@/lib/constants';
 import { setAuthCookie, removeAuthCookie, getCurrentUser } from '@/lib/auth';
 import { signToken } from '@/lib/auth';
 import bcrypt from 'bcryptjs';
@@ -76,13 +77,8 @@ export async function registerAction(formData: FormData) {
 
   const userId = `usr_${crypto.randomUUID().slice(0, 8)}`;
   
-  // Set default avatars based on role
-  let avatar = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop';
-  if (role === 'teacher') {
-    avatar = 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop';
-  } else if (role === 'admin') {
-    avatar = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop';
-  }
+  // Set default avatar for all new users
+  const avatar = DEFAULT_AVATAR;
 
   const newUser = {
     id: userId,
