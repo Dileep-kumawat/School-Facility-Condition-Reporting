@@ -72,9 +72,17 @@ async function connectToMongo(): Promise<{ client: MongoClient; db: Db }> {
   await client.connect();
   const db = client.db(DB_NAME);
 
-  // Seed MongoDB if empty
-  const usersCount = await db.collection('users').countDocuments();
-  if (usersCount === 0) {
+  // Seed MongoDB exactly once across all processes using an atomic upsert lock.
+  // findOneAndUpdate with upsert returns the *previous* document (before: 'before').
+  // If `value` is null, this process won the race and is the first to create the lock → seed.
+  // All other processes get a non-null `value` and skip seeding.
+  const lockResult = await db.collection('_meta').findOneAndUpdate(
+    { _id: 'seed_lock' as unknown as import('mongodb').ObjectId },
+    { $setOnInsert: { _id: 'seed_lock', seededAt: new Date() } },
+    { upsert: true, returnDocument: 'before' }
+  );
+
+  if (!lockResult) {
     const seed = await getSeedData();
     await db.collection('users').insertMany(seed.users);
     await db.collection('issues').insertMany(seed.issues);
