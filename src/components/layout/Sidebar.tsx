@@ -135,7 +135,7 @@ export function Sidebar({ user, isOpen, setIsOpen, onLogout }: SidebarProps) {
         {/* Navigation items */}
         <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
           {filteredMenuItems.map((item) => {
-            const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+            const isActive = pathname === item.href || (item.href !== '/dashboard' && item.href !== '/admin/dashboard' && pathname.startsWith(item.href + '/'));
             const Icon = item.icon;
             return (
               <Link
