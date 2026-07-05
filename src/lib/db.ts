@@ -1,8 +1,19 @@
 import { MongoClient, Db } from 'mongodb';
 import fs from 'fs';
 import path from 'path';
+import dns from 'dns';
 import { User, Issue, TimelineEvent, Notification } from '@/types';
 import { getSeedData } from './seedData';
+
+// Override default DNS servers if MONGODB_URI is provided
+// to prevent querySrv ECONNREFUSED errors on some local router/DNS setups
+if (process.env.MONGODB_URI) {
+  try {
+    dns.setServers(['8.8.8.8', '1.1.1.1']);
+  } catch (err) {
+    console.warn('Failed to set custom DNS servers for MongoDB connection:', err);
+  }
+}
 
 const MONGODB_URI = process.env.MONGODB_URI;
 const DB_NAME = 'school_facilities';
